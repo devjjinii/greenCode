@@ -1,30 +1,8 @@
-# JAVASCRIPT 수집
-
-## [정리한 저장소](https://github.com/dogcolley/Template/tree/master/document/JAVASCRIPT) [dogcolley's Template]
-
-### 목차 
-1. [데이터타입](https://github.com/dogcolley/Template/tree/master/document/JAVASCRIPT/01.데이터타입)
-
-2. [실행컨텍스트](https://github.com/dogcolley/Template/tree/master/document/JAVASCRIPT/02.실행컨텍스트)
-
-3. [This](https://github.com/dogcolley/Template/tree/master/document/JAVASCRIPT/03.This)
-
-4. [콜백함수](https://github.com/dogcolley/Template/tree/master/document/JAVASCRIPT/04.콜백함수)
-
-5. [클로저](https://github.com/dogcolley/Template/tree/master/document/JAVASCRIPT/05.클로저)
-
-6. [프로토타입](https://github.com/dogcolley/Template/tree/master/document/JAVASCRIPT/06.프로토타입)
-
-7. [클래스](https://github.com/dogcolley/Template/tree/master/document/JAVASCRIPT/07.클래스)
-
+# 01.데이터타입
 
 <br>
-<br>
-<br>
-<br>
 
-
-# 데이터타입
+## 데이터타입
 
 > **서술**
 :스크릅트 언어들은 다양한 목적에 비슷한시기에 많은언어가 형성 되어 있다. 이중 웹 서버스크립트로 사옹중인 JAVA,C(ASP,PHP)계열,파이썬,JAVASCIPT등이 있다. 그래도 어느정도 언어의 특성만 파악하면 모두 비슷한 원리와 개념으로 돌아가기에 이번기회에 하나만 깊게 파서 공부해보자
@@ -32,9 +10,10 @@
 <br>
 
 ----------
+
 <br>
 
-### 기본형의 종류 (Primitive Type)
+## 기본형의 종류 (Primitive Type)
 > 값을 담은 주소값을 복사한다.
 
 ```
@@ -48,7 +27,7 @@ var e
 ----------
 <br>
 
-### 참조형변수의 종류 (Reference Type)
+## 참조형변수의 종류 (Reference Type)
 > 값을 담긴 묶음을 가르키는 주소값을 복제한다.
 
 ```
@@ -57,13 +36,12 @@ function a () {}
 var obj2 = new a();
 var date = new Date();
 var arr = new Array();
-var RexExps =  test.RexExp();
 
 ```
 ----------
 <br>
 
-### 변수선언 과정 
+## 변수선언 과정 
 
 <br>
 1.변수할당
@@ -87,7 +65,7 @@ var a = 'abc'
 ----------
 <br>
 
-### 참조형변수의 종류 (Reference Type)
+## 참조형변수의 종류 (Reference Type)
 > 할당이 되는 과정을 표로 확인해봅시다!
 
 ```
@@ -113,7 +91,7 @@ var b = {
 ----------
 <br>
 
-### 객체의 가변성
+## 객체의 가변성
 > 아래의 코드를 보면 코드를 복사시 
 같은 주소를 바라보는 두 오브젝트의 값은 변경해도 서로 영향을 미친다.
 
@@ -138,18 +116,19 @@ console.log(user.name, user2.name); //jang , jang
 console.log(user.name === user); // ture;
 
 ```
-----------
-<br>
 
-### 
 > 가변성 해결을 위한 얕은 복사
+
+아래와 같이 얕의 복사의 경우 내부의 참조변수는 새로운 생성아닌 
+복사하는 대상과 같은 주소의 변수를 가르킨다.
+
 ```
 var copyObject = function (target){
     var result = {};
     for (var prop in target){
         result[prop] = target[prop];
     }
-    return result
+    return result;
 }
 
 var user = {
@@ -170,7 +149,7 @@ console.log(user === user2); // false
 ----------
 <br>
 
-### 깊은 복사 
+## 깊은 복사 
 > 복제한 오브젝트들 또한 새롭게 생성해줍니다!
 ```
 var copyObjectDeep = function (target){
@@ -209,4 +188,112 @@ console.log(user.arr === user2.arr);
 
 ```
 ----------
+<br>
 
+## Json을 활용한 간단한 깊은 복사
+>JSON을 활용한 깊은 봅사 방법입니다. 추가적으로 이러한 깊은
+복사의 경우 JSON문법으로 통신하는 httpRequest로 받는 데이터를 복사할때 유용한 방법입니다.
+
+```
+var copyObjectViaJSON = function(target){
+    return JSON.parse(JSON.stringify(target));
+}
+
+var obj = {
+    a: 1,
+    b: {
+        c: null,
+        d: [1,2],
+        func1 : function(){
+            console.log(3);
+        },
+        func2 : function(){
+            console.log(4);
+        }
+    }
+}
+
+var obj2 = copyObjectViaJSON(obj);
+
+obj2.a = 3;
+obj.b.c = 4;
+obj.b.d[1] = 3;
+
+console.log(obj); // {a:1, b:{c:null, d:[1,3], func1: f()}, fun2: f()}
+console.log(obj2); // {a:3, b:{c:4, d:[1,2], func1: f()}, fun2: f()}
+
+```
+----------
+<br>
+
+## undefinde와 널의 차이
+null의 경우 '값이없다'인 정의입니다.
+ undefind는 '값이없는허수'를 정의해줍니다.
+
+<br>
+
+>자동으로 undefined가 부여되는경우
+ ```
+var a;
+console.log(a) //undefined 값을 대입하지않는 변수에 접근시
+
+var obj = {a:1};
+console.log(obj.a); // 1
+console.log(obj.b); // undefined 존재하지않는 프로퍼티접근
+console.log(b) //err TDZ개념
+
+var func = function(){};
+var c = func(); // return이 없을경우 undefinde를 반환
+console.log(c); // undefined를 반환
+
+ ```
+>배열의 undefined
+```
+var arr1 = [];
+console.log(arr1[0]) // undefinde
+arr1.length = 3;
+console.log(arr1) // [3 emptY]
+var arr2 = new Array(3) 
+console.log(arr2) //[3 emptY]
+var arr3 = [undefined,undefined,undefined];
+console.log(arr3) //[undefined,undefined,undefined]
+```
+>빈 요소와 배열의 순회
+
+1. foreach의 경우 빈배열은 반환하지 않는다.
+2. map의 경우 NaN과 empty를 반환한다.
+3. filter의 경우 undefined와 빈배열을 반환한다.
+4. foreacg와 같이 빈배열은 반환하지 않는다.
+```
+var arr1 = [undefined, 1];
+var arr2 = [];
+arr2[1] = 1;
+
+arr1.forEach((v,i)=>console.log()); // undefined 0 / 1 1
+arr2.forEach((v,i)=>console.log()); // 1 1
+
+arr1.map((v,i)=> {return v + i}); // [NaN, 2]
+arr2.map((v,i)=>console.log()); // [empty, 2]
+
+arr1.filter((v)=>{return !v}); // [undefined]
+arr2.filter((v)=>{return !v}); // []
+
+arr1.reduce((p,c,i)=>{return p + c + i},''); // undefined01
+arr2.reduce((p,c,i)=>{return p + c + i},''); // 11;
+```
+
+위와 같은 결론은 undefined '비어있음을 의미하지만' 할당되지않는 경우는 자바스크립트의 정의로 undefined를 출력해주고
+실제로 할당한 인덱스가 존재하지않아 출력이 되지 않음
+<br>
+위와 같이 '비어있음'을 명시하는것이 헷갈리기 때문에 null을 사용해줍니다.
+<br>
+>undefined와 null을 비교
+```
+var n = null;
+console.log(typeof n) // object
+console.log(n == undefined); // true
+console.log(n == null); // true
+console.log(n === undefined); // false
+console.log(n === null); // true
+
+```
