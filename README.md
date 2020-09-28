@@ -12,3 +12,11 @@
 
 /javascript_core : 코어자바스크립트를 기준으로 개념정리를 한다.
 /project : 이후 결정 예정
+
+### 참고링크
+
+> 모든 자바스크립트 개발자가 알아야 하는 33가지 개념
+> <br> https://github.com/yjs03057/33-js-concepts
+
+> ES6 문법 자료
+> <br> https://github.com/ellapresso/JS-STUDY/tree/master/ES6_grammar
