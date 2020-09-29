@@ -91,6 +91,7 @@ var b = {
 ----------
 <br>
 
+
 ## 객체의 가변성
 > 아래의 코드를 보면 코드를 복사시 
 같은 주소를 바라보는 두 오브젝트의 값은 변경해도 서로 영향을 미친다.
@@ -117,9 +118,10 @@ console.log(user.name === user); // ture;
 
 ```
 
-> 가변성 해결을 위한 얕은 복사
+<br>
 
-아래와 같이 얕의 복사의 경우 내부의 참조변수는 새로운 생성아닌 
+> 가변성 해결을 위한 얕은 복사
+>>아래와 같이 얕의 복사의 경우 내부의 참조변수는 새로운 생성아닌 
 복사하는 대상과 같은 주소의 변수를 가르킨다.
 
 ```
@@ -247,6 +249,9 @@ var c = func(); // return이 없을경우 undefinde를 반환
 console.log(c); // undefined를 반환
 
  ```
+
+ <br>
+ 
 >배열의 undefined
 ```
 var arr1 = [];
@@ -258,6 +263,9 @@ console.log(arr2) //[3 emptY]
 var arr3 = [undefined,undefined,undefined];
 console.log(arr3) //[undefined,undefined,undefined]
 ```
+
+<br>
+
 >빈 요소와 배열의 순회
 
 1. foreach의 경우 빈배열은 반환하지 않는다.
@@ -287,6 +295,7 @@ arr2.reduce((p,c,i)=>{return p + c + i},''); // 11;
 <br>
 위와 같이 '비어있음'을 명시하는것이 헷갈리기 때문에 null을 사용해줍니다.
 <br>
+<br>
 >undefined와 null을 비교
 ```
 var n = null;
@@ -296,4 +305,52 @@ console.log(n == null); // true
 console.log(n === undefined); // false
 console.log(n === null); // true
 
+```
+
+## ES6에 추가된 const와 let의 차이
+
+>var 의 문제점에서 개선을 위해 추가된 변수 선언 방법 아래와 같은 문제점을 개선
+0. var 의 호이스팅 문제 선언시 전역변수에 편입되는 현상
+```
+// var는 function-scope이기 때문에 for문이 끝난다음에 i를 호출하면 값이 출력이 잘 된다.
+// 이건 var가 hoisting이 되었기 때문이다.
+for(var j=0; j<10; j++) {
+  console.log('j', j)
+}
+console.log('after loop j is ', j) // after loop j is 10
+
+```
+
+1. 중복 재선언을 해도 문제가 되지않는것을 개선함
+```
+// 이미 만들어진 변수이름으로 재선언했는데 아무런 문제가 발생하지 않는다.
+var a = 'test'
+var a = 'test2'
+
+// hoisting으로 인해 ReferenceError에러가 안난다.
+c = 'test'
+var c
+```
+2. const의 경우 재선언 재할당이 불가능
+3. let의 경우 재선언은 불가능하고 재할당은 가능
+
+```
+// let
+let a = 'test'
+let a = 'test2' // Uncaught SyntaxError: Identifier 'a' has already been declared
+a = 'test3'     // 가능
+
+// const
+const b = 'test'
+const b = 'test2' // Uncaught SyntaxError: Identifier 'a' has already been declared
+b = 'test3'    // Uncaught TypeError:Assignment to constant variable.
+```
+4. const의 경우 선언과 동시에 할당도 해줘야합니다.
+```
+// let은 선언하고 나중에 값을 할당이 가능하지만
+let dd
+dd = 'test'
+
+// const 선언과 동시에 값을 할당 해야한다.
+const aa // Missing initializer in const declaration
 ```
