@@ -81,7 +81,13 @@ LexicalEnvironment 의 스냅샷 으로 변경되도 방영되지 않음
 environmentRecord,outerEnvironmentReference 는 호이스팅의 요인이다. 원리를 파악해보자
 >>environmentRecord
 >>>현재 컨텍스트와 관련된 코드들이 복사된다. 이때 함수, 지정된 매계변수 식별자(var)등이 구성이 되어있습니다.
-<br>※참고 : window, Global은 내장객체가 아닌 호스트객체로 분류함
+<br>※참고 : window, Global은 내장객체가 아닌 호스트객체로 분류함 
+[참고사이트](https://velog.io/@bangina/FE%EB%A9%B4%EC%A0%91%EB%8C%80%EB%B9%84-%ED%98%B8%EC%8A%A4%ED%8A%B8-%EA%B0%9D%EC%B2%B4Host-Objects%EC%99%80-%EB%84%A4%EC%9D%B4%ED%8B%B0%EB%B8%8C-%EA%B0%9D%EC%B2%B4Native-Objects)
+<br>
+호스트 : os와 브라우저 환경에 따라 달라짐<br>
+내장객체, 네이티브객체 : 기본으로 모든 환경에서 동일하게 활용
+
+
 
 
 ```
@@ -150,3 +156,143 @@ c();
 ----------
 
 <br>
+
+## 함수선언법 종류
+
+>아래와 같이 함수를 선언하는 방법은 천차 만별입니다.
+>>하지만 모든 함수 선언이 같은 프로퍼티와 스콥을 가지고 있지 않습니다.
+>>> 특히 this 가 다른 화살표 함수가 대표적인 예입니다.
+
+```
+function a () {}
+
+var b = function () {}
+
+var c = function d () {}
+
+const e = () = > {}
+
+const f = new a;
+
+a() //ok
+b() //ok
+c() //ok
+d() //err
+e() //ok
+f() //ok
+```
+<br>
+
+>함수 선언문과 호이스팅
+```
+console.log(sum(1,2)); // ok
+console.log(multiply(3,4)); //err
+
+function sum(a,b){
+    return a + b;
+}
+
+var multiply = function(a,b){
+    return a * b;
+}
+```
+
+>위는 아래와 같이 변경된다.
+```
+var multiply;
+var sum = function sum(a,b){
+    return a + b;
+}
+
+console.log(sum(1,2)); // ok
+console.log(multiply(3,4)); //err
+
+multiply = function(a,b){
+    return a * b;
+}
+```
+
+>이렇게 보면 함수 선언식의 위험성 
+```
+console.log(sum(3,4));
+
+function sum(x,y){
+    return x + y;
+}
+
+var a = sum(1,2);
+
+console.log(a);
+
+// .... 5000 line after
+
+// 모든 sum은 상하 상관없이 마지막 선언된 sum을 기준으로 실행된다.
+
+function sum(x,y){
+    return x + ' + ' + y + ' = ' + (x+y);
+}
+
+var c = sum(1,2);
+
+
+console.log(c);
+```
+
+>이렇게 보면 함수 표현식이 상대적으로 안전하다.
+```
+console.log(sum(3,4));
+
+var sum = function(x,y){
+    return x + y;
+}
+
+var a = sum(1,2);
+
+console.log(a);
+
+var sum = function (x,y){
+    return x + ' + ' + y + ' = ' + (x+y);
+}
+
+var c = sum(3,4);
+
+console.log(c);
+
+```
+
+----------
+
+<br>
+
+## 스코프 체인
+
+>오직 전역함수를 제외한 부분에선 함수에서만 스코프가 생깁니다.
+>> 자 만약 앞부분에서 실행컨텍스트를 테스트했던부분에서 inner를 찍으면 어떻게 되는가? 콘솔에 스콥을 확인해보자
+
+```
+var a = 1;
+function outer(){
+    function inner(){
+        console.log('inner',a); //undefined , 스냅샷으로 값이 방영되지 않습니다.
+        var a = 3; 
+        console.dir(inner); 
+        // 이때 글로벌 a에 접근할수 없음으로 변수의 은닉화이다.
+    }
+    inner();
+    console.log(a);  // 1
+    console.log(b);  // undefined
+    var b = 5 ;
+
+    inner2() // 호이스팅
+
+    function inner2(){
+        var c = 3;
+        console.log('inner2',a); //undefined , 스냅샷으로 값이 방영되지 않습니다.
+        console.log(c); // 3
+    }
+}
+outer();
+console.log(a); // 1
+```
+
+
