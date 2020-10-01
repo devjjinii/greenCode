@@ -2,6 +2,7 @@
 
 var myProsess = {
     name : '',
+    phone : '',
     setName : (setName) =>{
         this.name = setName;
     },
@@ -10,7 +11,10 @@ var myProsess = {
     },
     axiosing : () =>{
         console.log(this);
-        axios();
+        const userinfo = this;
+        axios().then(()=>{
+            console.log(this);
+        });
     }
 }
 
