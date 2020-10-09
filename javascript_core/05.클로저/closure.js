@@ -125,9 +125,9 @@ function makeHelloFunction() {
   let hello = makeHelloFunction();
   hello(); 
   
-  // makeHelloFunction()에서 반환하는 익명 함수 객체에 스코프 환경이 존재하기 때문입니다
+  // makeHelloFunction()에서 반환하는 익명 함수 객체에 스코프 환경이 존재하기 때문.
   // 이러한 현상이 마치 변수를 붙잡아두는 것처럼 보이므로, 
-  // 붙잡아둔다는 뜻을 가진 영어 단어 ‘캡처(capture)’를 사용해 변수 캡처라고도 부릅니다.
+  // 붙잡아둔다는 뜻을 가진 영어 단어 ‘캡처(capture)’를 사용해 변수 캡처라고도 부른다.
 
 
   /** 예제 8 
